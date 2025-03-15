@@ -361,7 +361,7 @@ public class App {
                                     }
 
                                     System.out.println("Available cinemas for " + selectedMovie + ":");
-                                    List<Cinema> uniqueCinemas = new ArrayList<>(); // Используем List для уникальных кинотеатров
+                                    List<Cinema> uniqueCinemas = new ArrayList<>();
                                     Set<String> uniqueCinemaNames = new HashSet<>();
                                     for (Cinema cinema : availableCinemas) {
                                         if (uniqueCinemaNames.add(cinema.name)) {
@@ -394,7 +394,7 @@ public class App {
                                         }
 
                                         System.out.println("Available halls for " + selectedMovie + ":");
-                                        List<Hall> uniqueHalls = new ArrayList<>(); // Используем List для уникальных залов
+                                        List<Hall> uniqueHalls = new ArrayList<>();
                                         Set<String> uniqueHallNames = new HashSet<>();
                                         for (Hall hall : availableHalls) {
                                             if (uniqueHallNames.add(hall.name)) {
