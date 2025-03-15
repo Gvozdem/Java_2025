@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.regex.Pattern;
 
 class Cinema {
     String name;
@@ -12,15 +11,6 @@ class Cinema {
 
     void addHall(Hall hall) {
         halls.add(hall);
-    }
-
-    Hall findHall(String hallName) {
-        for (Hall hall : halls) {
-            if (hall.name.equals(hallName)) {
-                return hall;
-            }
-        }
-        return null;
     }
 }
 
@@ -52,10 +42,6 @@ class Hall {
             }
             System.out.println();
         }
-    }
-
-    boolean hasSessions() {
-        return !sessions.isEmpty();
     }
 }
 
@@ -101,27 +87,6 @@ class TicketSystem {
         for (int i = 0; i < cinemas.size(); i++) {
             System.out.println((i + 1) + ". " + cinemas.get(i).name);
         }
-    }
-
-    void sellTicket(String movie, String time) {
-        for (Cinema cinema : cinemas) {
-            for (Hall hall : cinema.halls) {
-                for (Session session : hall.sessions) {
-                    if (session.movie.equals(movie) && session.time.equals(time)) {
-                        for (int i = 0; i < hall.seats.length; i++) {
-                            for (int j = 0; j < hall.seats[i].length; j++) {
-                                if (!hall.seats[i][j].isBooked) {
-                                    hall.seats[i][j].book();
-                                    System.out.println("Ticket booked for " + movie + " at " + time);
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        System.out.println("No available seats for " + movie + " at " + time);
     }
 
     void findNextAvailableSession(String movie) {
@@ -179,7 +144,7 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         TicketSystem ticketSystem = new TicketSystem();
 
-        // Предопределенные логин и пароль администратора
+        // ЛОГИН И ПАРОЛЬ
         String adminLogin = "admin";
         String adminPassword = "password";
 
@@ -197,9 +162,9 @@ public class App {
                 // Режим администратора
                 boolean validCredentials = false;
                 while (!validCredentials) {
-                    System.out.print("\nEnter admin login: ");
+                    System.out.print("\nEnter admin login (admin): ");
                     String login = scanner.nextLine();
-                    System.out.print("Enter admin password: ");
+                    System.out.print("Enter admin password (password): ");
                     String password = scanner.nextLine();
 
                     if (login.equals(adminLogin) && password.equals(adminPassword)) {
@@ -236,33 +201,30 @@ public class App {
                             if (ticketSystem.cinemas.isEmpty()) {
                                 System.out.println("No cinemas available. Please add a cinema first.");
                             } else {
-                                ticketSystem.listCinemas();  // Вывод списка кинотеатров
+                                ticketSystem.listCinemas();
                                 System.out.print("Enter the number of the cinema to add hall: ");
-                                int cinemaIndex = getValidInteger(scanner) - 1; // Понижаем на 1 для индексации
+                                int cinemaIndex = getValidInteger(scanner) - 1;
                                 if (cinemaIndex >= 0 && cinemaIndex < ticketSystem.cinemas.size()) {
                                     Cinema existingCinema = ticketSystem.cinemas.get(cinemaIndex);
                                     System.out.print("Enter hall name: ");
                                     String hallName = scanner.nextLine();
 
-                                    // Проверка ввода количества строк
                                     int rows;
                                     while (true) {
                                         System.out.print("Enter number of rows: ");
                                         rows = getValidInteger(scanner);
                                         if (rows > 0) {
-                                            break; // Ввод корректен
+                                            break;
                                         } else {
                                             System.out.println("Please enter a positive integer for rows.");
                                         }
                                     }
-
-                                    // Проверка ввода количества столбцов
                                     int columns;
                                     while (true) {
                                         System.out.print("Enter number of columns: ");
                                         columns = getValidInteger(scanner);
                                         if (columns > 0) {
-                                            break; // Ввод корректен
+                                            break;
                                         } else {
                                             System.out.println("Please enter a positive integer for columns.");
                                         }
@@ -282,9 +244,9 @@ public class App {
                             if (ticketSystem.cinemas.isEmpty()) {
                                 System.out.println("No cinemas available. Please add a cinema first.");
                             } else {
-                                ticketSystem.listCinemas();  // Вывод списка кинотеатров
+                                ticketSystem.listCinemas();
                                 System.out.print("Enter the number of the cinema for session: ");
-                                int sessionCinemaIndex = getValidInteger(scanner) - 1; // Понижаем на 1 для индексации
+                                int sessionCinemaIndex = getValidInteger(scanner) - 1;
                                 if (sessionCinemaIndex >= 0 && sessionCinemaIndex < ticketSystem.cinemas.size()) {
                                     Cinema cinemaForSessionObj = ticketSystem.cinemas.get(sessionCinemaIndex);
                                     if (cinemaForSessionObj.halls.isEmpty()) {
@@ -295,19 +257,18 @@ public class App {
                                             System.out.println((i + 1) + ". " + cinemaForSessionObj.halls.get(i).name);
                                         }
                                         System.out.print("Enter hall number for session: ");
-                                        int hallForSessionIndex = getValidInteger(scanner) - 1; // Понижаем на 1 для индексации
+                                        int hallForSessionIndex = getValidInteger(scanner) - 1;
                                         if (hallForSessionIndex >= 0 && hallForSessionIndex < cinemaForSessionObj.halls.size()) {
                                             Hall hallForSession = cinemaForSessionObj.halls.get(hallForSessionIndex);
                                             System.out.print("Enter movie name for session: ");
                                             String movieName = scanner.nextLine();
                                             
-                                            // Проверка формата времени
                                             String time;
                                             while (true) {
                                                 System.out.print("Enter session time (HH:MM): ");
                                                 time = scanner.nextLine();
                                                 if (time.matches("([01]\\d|2[0-3]):[0-5]\\d")) {
-                                                    break; // Время введено корректно
+                                                    break;
                                                 } else {
                                                     System.out.println("Invalid time format. Please enter time in HH:MM format.");
                                                 }
@@ -385,7 +346,7 @@ public class App {
                                     System.out.println((i + 1) + ". " + movieList.get(i));
                                 }
                                 System.out.print("Select a movie (number): ");
-                                int movieChoice = getValidInteger(scanner) - 1; // Понижаем на 1 для индексации
+                                int movieChoice = getValidInteger(scanner) - 1;
 
                                 if (movieChoice >= 0 && movieChoice < movieList.size()) {
                                     String selectedMovie = movieList.get(movieChoice);
@@ -397,7 +358,7 @@ public class App {
                                             for (Session session : hall.sessions) {
                                                 if (session.movie.equals(selectedMovie)) {
                                                     availableCinemas.add(cinema);
-                                                    break; // Выход из внутреннего цикла, если фильм найден
+                                                    break; // Выход из цикла, если фильм найден
                                                 }
                                             }
                                         }
@@ -413,7 +374,7 @@ public class App {
                                         System.out.println((i + 1) + ". " + availableCinemas.get(i).name);
                                     }
                                     System.out.print("Select a cinema (number): ");
-                                    int cinemaChoice = getValidInteger(scanner) - 1; // Понижаем на 1 для индексации
+                                    int cinemaChoice = getValidInteger(scanner) - 1;
 
                                     if (cinemaChoice >= 0 && cinemaChoice < availableCinemas.size()) {
                                         Cinema selectedCinema = availableCinemas.get(cinemaChoice);
@@ -438,7 +399,7 @@ public class App {
                                             System.out.println((i + 1) + ". " + availableHalls.get(i).name);
                                         }
                                         System.out.print("Select a hall (number): ");
-                                        int hallChoice = getValidInteger(scanner) - 1; // Понижаем на 1 для индексации
+                                        int hallChoice = getValidInteger(scanner) - 1;
 
                                         if (hallChoice >= 0 && hallChoice < availableHalls.size()) {
                                             Hall selectedHall = availableHalls.get(hallChoice);
@@ -460,9 +421,9 @@ public class App {
                                                     case 2:
                                                         // Бронирование места
                                                         System.out.print("Enter row number: ");
-                                                        int row = getValidInteger(scanner) - 1; // Понижаем на 1 для индексации
+                                                        int row = getValidInteger(scanner) - 1;
                                                         System.out.print("Enter column number: ");
-                                                        int column = getValidInteger(scanner) - 1; // Понижаем на 1 для индексации
+                                                        int column = getValidInteger(scanner) - 1;
 
                                                         if (row >= 0 && row < selectedHall.seats.length &&
                                                             column >= 0 && column < selectedHall.seats[row].length) {
@@ -499,7 +460,7 @@ public class App {
                             break;
 
                         case 2:
-                            // Найти ближайший сеанс
+                            // Найти ближайший сеанс (c 00:00)
                             System.out.print("Enter the movie name to find the next available session: ");
                             String movieToFind = scanner.nextLine();
                             ticketSystem.findNextAvailableSession(movieToFind);
